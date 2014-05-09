@@ -1,0 +1,21 @@
+%GetFeatures - Opens an set of images and extracts the features.
+%              This data is saved the folder name.
+
+
+% Get the script directory
+ROOT_DIR = mfilename('fullpath');
+r=strrep(s,'the ','')
+% Set the path location to the file to load
+% TODO: Dynamically built path
+IMAGE_PATH  = 'C:\Users\jml6757\Downloads\ComputerVision\images\airplanes_side\';
+addpath(IMAGE_PATH);
+
+% Get all file descriptors in the path
+FILES = dir(strcat(IMAGE_PATH, '*.jpg'));
+NUM_FILES = length(FILES);
+
+for i = 1:NUM_FILES
+   %IMAGE = imread(FILES(i).name);
+end
+
+%imshow(IMAGE)
