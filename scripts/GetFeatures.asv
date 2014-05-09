@@ -1,21 +1,36 @@
 %GetFeatures - Opens an set of images and extracts the features.
 %              This data is saved the folder name.
 
+% Get the project directory
+ROOT_DIR = strrep(mfilename('fullpath') ,'scripts\GetFeatures','');
 
-% Get the script directory
-ROOT_DIR = mfilename('fullpath');
-r=strrep(s,'the ','')
-% Set the path location to the file to load
-% TODO: Dynamically built path
-IMAGE_PATH  = 'C:\Users\jml6757\Downloads\ComputerVision\images\airplanes_side\';
+% Set the path location and add to the global matlab path
+IMAGE_PATH = strcat(ROOT_DIR, 'images\airplanes_side\');
 addpath(IMAGE_PATH);
 
-% Get all file descriptors in the path
-FILES = dir(strcat(IMAGE_PATH, '*.jpg'));
-NUM_FILES = length(FILES);
+% Get all image file descriptors in the path
+FILE_DESCRIPTORS = dir(strcat(IMAGE_PATH, '*.jpg'));
+NUM_FILES = length(FILE_DESCRIPTORS);
+
+% Allocate array to hold extracted features
+SURF_FEATURES = struct('filename',  0, 'features', 0);
+
 
 for i = 1:NUM_FILES
-   %IMAGE = imread(FILES(i).name);
+    
+    %Display iteration
+    display(strcat('Image: ', FILE_DESCRIPTORS(i).name));
+    
+    %Load image and extract features
+    IMAGE = rgb2gray(imread(FILE_DESCRIPTORS(i).name));
+    SURF_POINTS = detectSURFFeatures(IMAGE);
+    SURF_POINTS = SURF_POINTS.selectStrongest(128);
+    
+    %Store extracted features to vector
+    SURF_FEATURES(i).filename = FILE_DESCRIPTORS(i).name;
+    SURF_FEATURES(i).features = SURF_POINTS;
 end
 
-%imshow(IMAGE)
+% Store extracted feature vector to disk
+OUTPUT_FILE = 'surf_featurs.struct';
+save()
