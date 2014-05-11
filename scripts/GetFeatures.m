@@ -5,10 +5,10 @@
 INPUT_FOLDER = 'airplanes_side'
 
 % Get the project directory
-ROOT_DIR = strrep(mfilename('fullpath') ,'scripts\GetFeatures','');
+ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/GetFeatures','');
 
 % Set the path location and add to the global matlab path
-IMAGE_PATH = strcat(ROOT_DIR, 'images\', INPUT_FOLDER, '\');
+IMAGE_PATH = strcat(ROOT_DIR, 'images/', INPUT_FOLDER, '/');
 addpath(IMAGE_PATH);
 
 % Get all image file descriptors in the path
@@ -34,4 +34,4 @@ for i = 1:NUM_FILES
 end
 
 % Store extracted feature vector to disk
-save(strcat(ROOT_DIR,'data\',INPUT_FOLDER, '.dat'), 'FEATURES');
+save(strcat(ROOT_DIR,'data/',INPUT_FOLDER, '.dat'), 'FEATURES');
