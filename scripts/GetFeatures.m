@@ -24,7 +24,10 @@ for i = 1:NUM_FILES
     display(strcat('Image: ', FILE_DESCRIPTORS(i).name));
     
     %Load image
-    IMAGE = rgb2gray(imread(FILE_DESCRIPTORS(i).name));
+    IMAGE = imread(FILE_DESCRIPTORS(i).name);
+    if (size(IMAGE, 3) == 3)
+        IMAGE = rgb2gray(IMAGE);
+    end;
     
     %Store extracted features to vector
     FEATURES(i).filename = FILE_DESCRIPTORS(i).name;
