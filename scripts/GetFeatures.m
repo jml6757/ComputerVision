@@ -2,14 +2,13 @@
 %              This data is saved the folder name.
 
 % Input and output arguments
-INPUT_FOLDER = 'airplanes_side\'
-OUTPUT_FILE = 'plane_features.dat';
+INPUT_FOLDER = 'airplanes_side'
 
 % Get the project directory
 ROOT_DIR = strrep(mfilename('fullpath') ,'scripts\GetFeatures','');
 
 % Set the path location and add to the global matlab path
-IMAGE_PATH = strcat(ROOT_DIR, 'images\', INPUT_FOLDER);
+IMAGE_PATH = strcat(ROOT_DIR, 'images\', INPUT_FOLDER, '\');
 addpath(IMAGE_PATH);
 
 % Get all image file descriptors in the path
@@ -29,10 +28,10 @@ for i = 1:NUM_FILES
     
     %Store extracted features to vector
     FEATURES(i).filename = FILE_DESCRIPTORS(i).name;
-    FEATURES(i).surf     = detectSURFFeatures(IMAGE);
-    FEATURES(i).fast     = detectFASTFeatures(IMAGE);
+    %FEATURES(i).surf     = detectSURFFeatures(IMAGE);
+    %FEATURES(i).fast     = detectFASTFeatures(IMAGE);
     %FEATURES(i).brisk    = detectBRISKFeatures(IMAGE);
 end
 
 % Store extracted feature vector to disk
-save(strcat(ROOT_DIR,'data\',OUTPUT_FILE), 'FEATURES');
+save(strcat(ROOT_DIR,'data\',INPUT_FOLDER, '.dat'), 'FEATURES');
