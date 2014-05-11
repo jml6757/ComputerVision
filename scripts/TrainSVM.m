@@ -34,13 +34,16 @@ for i = 1:5
     
 end
 
+%Shuffle data
+
+
 %Add data to structured SVM training arrays
 for i = 1:NUM_POS
-    
+    TRAINING_LABELS(i) = 1;
 end
 
 for i = 1:NUM_NEG
-    
+    TRAINING_LABELS(i+NUM_POS) = -1;
 end
 
 
