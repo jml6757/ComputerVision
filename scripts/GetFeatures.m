@@ -2,7 +2,7 @@
 %              This data is saved the folder name.
 
 % Input and output arguments
-INPUT_FOLDER = 'airplanes_side'
+INPUT_FOLDER = 'motorbikes_side'
 
 % Get the project directory
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/GetFeatures','');
@@ -16,7 +16,7 @@ FILE_DESCRIPTORS = dir(strcat(IMAGE_PATH, '*.jpg'));
 NUM_FILES = length(FILE_DESCRIPTORS);
 
 % Allocate array to hold extracted features
-FEATURES = struct('filename',  0, 'surf', 0, 'freak', 0);
+FEATURES = struct('filename',  0, 'surfFeatures', 0, 'freakFeatures', 0, 'surfPoints', 0, 'freakPoints', 0);
 
 for i = 1:NUM_FILES
     
@@ -31,8 +31,8 @@ for i = 1:NUM_FILES
     
     %Store extracted features to vector
     FEATURES(i).filename = FILE_DESCRIPTORS(i).name;
-    FEATURES(i).surf     = extractFeatures(IMAGE, detectSURFFeatures(IMAGE));
-    FEATURES(i).freak    = extractFeatures(IMAGE, detectFASTFeatures(IMAGE), 'Method', 'FREAK');
+    [FEATURES(i).surfFeatures, FEATURES(i).surfPoints]     = extractFeatures(IMAGE, detectSURFFeatures(IMAGE));
+    [FEATURES(i).freakFeatures, FEATURES(i).freakPoints]   = extractFeatures(IMAGE, detectFASTFeatures(IMAGE), 'Method', 'FREAK');
 end
 
 % Store extracted feature vector to disk
