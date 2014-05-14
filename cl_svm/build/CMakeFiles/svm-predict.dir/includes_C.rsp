@@ -1,0 +1,1 @@
+-IC:/StereoImaging/cl_svm/code/include -IC:/StereoImaging/cl_svm/code/src/svm-predict -IC:/StereoImaging/cl_svm/code/src/svm-train -IC:/StereoImaging/cl_svm/code/src/svm -IC:/StereoImaging/cl_svm/code/src/opencl_kernels -I"C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v5.5/include" -I"C:/Program Files (x86)/AMD/clAmdBlas/include" 

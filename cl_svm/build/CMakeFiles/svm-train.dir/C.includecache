@@ -1,0 +1,78 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../code/include/svm.h
+
+C:/Program Files (x86)/AMD/clAmdBlas/include/clAmdBlas-complex.h
+
+C:/Program Files (x86)/AMD/clAmdBlas/include/clAmdBlas.h
+OpenCL/cl.h
+-
+CL/cl.h
+-
+clAmdBlas-complex.h
+-
+
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v5.5/include/CL/cl.h
+OpenCL/cl_platform.h
+-
+CL/cl_platform.h
+-
+
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v5.5/include/CL/cl_platform.h
+AvailabilityMacros.h
+-
+stdint.h
+-
+stddef.h
+-
+altivec.h
+-
+intrin.h
+-
+xmmintrin.h
+-
+intrin.h
+-
+emmintrin.h
+-
+mmintrin.h
+-
+intrin.h
+-
+immintrin.h
+-
+
+C:/StereoImaging/cl_svm/code/src/svm-train/cross_validation_with_matrix_precomputation.c
+
+C:/StereoImaging/cl_svm/code/src/svm-train/kernel_matrix_calculation.c
+math.h
+-
+CL/cl.h
+-
+clAmdBlas.h
+C:/StereoImaging/cl_svm/code/src/svm-train/clAmdBlas.h
+
+C:/StereoImaging/cl_svm/code/src/svm-train/svm-train.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+ctype.h
+-
+errno.h
+-
+svm.h
+C:/StereoImaging/cl_svm/code/src/svm-train/svm.h
+kernel_matrix_calculation.c
+C:/StereoImaging/cl_svm/code/src/svm-train/kernel_matrix_calculation.c
+cross_validation_with_matrix_precomputation.c
+C:/StereoImaging/cl_svm/code/src/svm-train/cross_validation_with_matrix_precomputation.c
+

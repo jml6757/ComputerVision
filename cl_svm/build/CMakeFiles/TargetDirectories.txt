@@ -1,0 +1,6 @@
+C:/StereoImaging/cl_svm/build/CMakeFiles/KernelTesting.dir
+C:/StereoImaging/cl_svm/build/CMakeFiles/blasTesting.dir
+C:/StereoImaging/cl_svm/build/CMakeFiles/cpuTesting.dir
+C:/StereoImaging/cl_svm/build/CMakeFiles/svm-predict.dir
+C:/StereoImaging/cl_svm/build/CMakeFiles/svm-train.dir
+C:/StereoImaging/cl_svm/build/CMakeFiles/svm_lib.dir

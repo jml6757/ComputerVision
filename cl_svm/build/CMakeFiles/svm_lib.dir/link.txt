@@ -1,0 +1,2 @@
+C:\MinGW\bin\ar.exe cr libsvm_lib.a  CMakeFiles/svm_lib.dir/code/src/svm/svm.cpp.obj
+C:\MinGW\bin\ranlib.exe libsvm_lib.a

@@ -1,0 +1,54 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../code/include/profiling.h
+stdlib.h
+-
+sys/time.h
+-
+Windows.h
+-
+
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v5.5/include/CL/cl.h
+OpenCL/cl_platform.h
+-
+CL/cl_platform.h
+-
+
+C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v5.5/include/CL/cl_platform.h
+AvailabilityMacros.h
+-
+stdint.h
+-
+stddef.h
+-
+altivec.h
+-
+intrin.h
+-
+xmmintrin.h
+-
+intrin.h
+-
+emmintrin.h
+-
+mmintrin.h
+-
+intrin.h
+-
+immintrin.h
+-
+
+C:/StereoImaging/cl_svm/testing/src/OCLTesting/TestCpu.c
+stdio.h
+-
+CL/cl.h
+-
+profiling.h
+C:/StereoImaging/cl_svm/testing/src/OCLTesting/profiling.h
+

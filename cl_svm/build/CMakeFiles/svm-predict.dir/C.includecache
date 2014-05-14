@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../code/include/svm.h
+
+C:/StereoImaging/cl_svm/code/src/svm-predict/svm-predict.c
+stdio.h
+-
+ctype.h
+-
+stdlib.h
+-
+string.h
+-
+errno.h
+-
+svm.h
+C:/StereoImaging/cl_svm/code/src/svm-predict/svm.h
+
