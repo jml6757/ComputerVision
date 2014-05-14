@@ -31,8 +31,11 @@ for i = 1:NUM_FILES
     
     %Store extracted features to vector
     FEATURES(i).filename = FILE_DESCRIPTORS(i).name;
-    [FEATURES(i).surfFeatures, FEATURES(i).surfPoints]     = extractFeatures(IMAGE, (detectSURFFeatures(IMAGE).selectStrongest(100)));
-    [FEATURES(i).freakFeatures, FEATURES(i).freakPoints]   = extractFeatures(IMAGE, (detectFASTFeatures(IMAGE).selectStrongest(100)), 'Method', 'FREAK');
+    tmp = detectSURFFeatures(IMAGE);
+    [FEATURES(i).surfFeatures, FEATURES(i).surfPoints]     = extractFeatures(IMAGE, tmp.selectStrongest(100));
+    tmp = detectFASTFeatures(IMAGE);
+    [FEATURES(i).freakFeatures, FEATURES(i).freakPoints]   = extractFeatures(IMAGE, tmp.selectStrongest(100), 'Method', 'FREAK');
+    clear tmp;
 end
 
 % Store extracted feature vector to disk
