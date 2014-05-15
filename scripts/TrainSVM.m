@@ -61,7 +61,7 @@ end
 display ('Training SVM...');
 
 %Train SVM
-SVM = svmtrain(double(TRAINING_LABELS'), double(TRAINING_FEATURES'), '-c 1 -g 0.07');
+SVM = svmtrain(double(TRAINING_LABELS'), double(TRAINING_FEATURES'), '-b 1 -c 1 -g 0.07');
 
 display ('Saving SVM...');
 
