@@ -1,4 +1,5 @@
 % Build histograms from IDX data and image DATA
+HIST_SIZE = 512;
 
 % Setup Paths
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/BuildHistograms','');
@@ -17,8 +18,8 @@ display('Building Histograms...');
 START = 1;
 for i = 1:length(DATA)
     NUM_FEATS = DATA(i).numFeatures;
-    END = START + NUM_FEATS;
-    HIST = hist(IDX(START:END), 256);
+    END = START + NUM_FEATS-1;
+    HIST = hist(IDX(START:END), HIST_SIZE);
     DATA(i).histogram = HIST/norm(HIST);
     START = END;
 end

@@ -1,12 +1,13 @@
 % Parameters
-k = 128;
-
-% Get data from files
-display('Loading Data...');
+k = 512;
 
 % Get the project directory
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/BuildClusters','');
+LIB_PATH  = strcat(ROOT_DIR, 'lib/');
+addpath(LIB_PATH);
 
+% Get data from files
+display('Loading Data...');
 X = load(strcat(ROOT_DIR,'data/', 'feature_array.dat'),'-mat');
 X = X.X;
 
@@ -14,7 +15,7 @@ X = X.X;
 display ('Computing k-means...');
 
 opts = statset('Display','iter','UseParallel',true,'MaxIter',1);
-[IDX,C] = kmeans(X,k,'Options',opts,'Replicates',8);
+[C, IDX] = kmeans_gpu(X,k);
 
 % Store extracted feature vector to disk
 display ('Saving Data...');

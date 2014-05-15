@@ -18,9 +18,9 @@ display ('Loading Data...');
 DATA = load(strcat(DATA_PATH, 'image_data.dat'),'-mat');
 DATA = DATA.DATA;
 
-% Shuffle data
+% Allocate structures for SVM arguments
 TRAINING_LABELS = zeros(length(DATA), 1);
-TRAINING_FEATURES = zeros(length(DATA), length(DATA(1).histogram));
+TRAINING_FEATURES = [];
 
 %Add data to structured SVM training arrays
 display ('Formatting Data...');
@@ -31,15 +31,15 @@ for i = 1:length(DATA)
         LABEL = -1;
     end
     TRAINING_LABELS(i) =  LABEL;
-    TRAINING_FEATURES(i) = POS_DATA(i).histogram;
+    TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
 end
 
 %Train SVM
 display ('Training SVM...');
-SVM = svmtrain(double(TRAINING_LABELS), double(TRAINING_FEATURES), '-c 1 -g 0.07');
+SVM = svmtrain(double(TRAINING_LABELS), double(TRAINING_FEATURES), '-c 1 -g 0.07 -b 1');
 
 % Store support vector machine model
 display ('Saving SVM...');
-save(strcat(ROOT_DIR,'data/',POSITIVE_FILE, '_svm.dat'), 'SVM');
+save(strcat(ROOT_DIR,'data/', 'category', int2str(CATEGORY), '_svm.dat'), 'SVM');
 
 display ('Done.');
