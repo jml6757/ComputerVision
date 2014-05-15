@@ -1,16 +1,20 @@
 % Parameters
-k = 256;
+k = 128;
 
 % Get data from files
 display('Loading Data...');
 
-X = load(strcat(DATA_PATH, 'feature_array.dat'),'-mat');
+% Get the project directory
+ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/BuildClusters','');
+
+X = load(strcat(ROOT_DIR,'data/', 'feature_array.dat'),'-mat');
 X = X.X;
 
 %Create bag of words using kmeans clustering
 display ('Computing k-means...');
 
-[IDX,C] = kmeans(X,k);
+opts = statset('Display','iter','UseParallel',true,'MaxIter',1);
+[IDX,C] = kmeans(X,k,'Options',opts,'Replicates',8);
 
 % Store extracted feature vector to disk
 display ('Saving Data...');
