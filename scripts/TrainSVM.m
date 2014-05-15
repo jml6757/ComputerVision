@@ -2,73 +2,44 @@
 %           and trains a support vector machine for the chosen
 %           data set.
 
-% Input and output arguments
-POSITIVE_FILE = 'airplanes_side';
-NEGATIVE_FILE = ['background     '; 'cars_brad      '; 'cars_markus    '; 'faces          '; 'leaves         '; 'motorbikes_side'];
-NEGATIVE_FILE = cellstr(NEGATIVE_FILE);
 
-% Get the project directory
+% Parameters
+CATEGORY = 1; % Train with this category as the positive images
+
+% Get the project directory and set up paths
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/TrainSVM','');
-
-% Set the data/libary location and add to the global matlab path
 DATA_PATH = strcat(ROOT_DIR, 'data/');
 LIB_PATH  = strcat(ROOT_DIR, 'lib/');
 addpath(DATA_PATH);
 addpath(LIB_PATH);
 
-% Number of images
-NUM_POS = 50;                     % Number of positive instances
-NUM_NEG = 50;                     % Number of negative instances
-NUM_TRAINING = NUM_NEG + NUM_POS; % Total number of training images
-NUM_FEATURES = 64;                % Number of features per image
-
+% Load positive data
 display ('Loading Data...');
+DATA = load(strcat(DATA_PATH, 'image_data.dat'),'-mat');
+DATA = DATA.DATA;
 
-%Load positive data
-POS_DATA = load(strcat(DATA_PATH, POSITIVE_FILE, '.dat'),'-mat');
-POS_DATA = POS_DATA.FEATURES;
-
-%Load negative data
-for i = 1:length(NEGATIVE_FILE)
-    NEG_DATA(i) = load(strcat(DATA_PATH, strtrim(char(NEGATIVE_FILE(i))), '.dat'),'-mat');
-end
-
-display ('Formatting Data...');
-
-%Shuffle data
-TRAINING_LABELS = [];
-TRAINING_FEATURES = [];
+% Shuffle data
+TRAINING_LABELS = zeros(length(DATA), 1);
+TRAINING_FEATURES = zeros(length(DATA), length(DATA(1).histogram));
 
 %Add data to structured SVM training arrays
-for i = 1:NUM_POS
-    [NUM_FEATS, NUM_POINTS] = size(POS_DATA(i).surfFeatures);
-    for j = 1:NUM_FEATS
-        TRAINING_LABELS = [TRAINING_LABELS 1];
-        TRAINING_FEATURES = [TRAINING_FEATURES POS_DATA(i).surfFeatures(j,:)'];
+display ('Formatting Data...');
+for i = 1:length(DATA)
+    if(DATA(i).category == CATEGORY)
+        LABEL = 1;
+    else
+        LABEL = -1;
     end
+    TRAINING_LABELS(i) =  LABEL;
+    TRAINING_FEATURES(i) = POS_DATA(i).histogram;
 end
-
-for k = 1:6
-    NEG_SET = NEG_DATA(k).FEATURES;
-    for i = 1:10
-        [NUM_FEATS, NUM_POINTS] = size(NEG_SET(i).surfFeatures);
-        for j = 1:NUM_FEATS
-            TRAINING_LABELS = [TRAINING_LABELS -1];
-            TRAINING_FEATURES = [TRAINING_FEATURES NEG_SET(i).surfFeatures(j,:)'];
-        end
-    end
-end
-
-size(TRAINING_FEATURES)
-
-display ('Training SVM...');
 
 %Train SVM
-SVM = svmtrain(double(TRAINING_LABELS'), double(TRAINING_FEATURES'), '-b 1 -c 1 -g 0.07');
-
-display ('Saving SVM...');
+display ('Training SVM...');
+SVM = svmtrain(double(TRAINING_LABELS), double(TRAINING_FEATURES), '-c 1 -g 0.07');
 
 % Store support vector machine model
+display ('Saving SVM...');
 save(strcat(ROOT_DIR,'data/',POSITIVE_FILE, '_svm.dat'), 'SVM');
 
 display ('Done.');

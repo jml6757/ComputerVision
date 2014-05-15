@@ -18,7 +18,8 @@ START = 1;
 for i = 1:length(DATA)
     NUM_FEATS = DATA(i).numFeatures;
     END = START + NUM_FEATS;
-    DATA(i).histogram = hist(IDX(START:END), 256);
+    HIST = hist(IDX(START:END), 256);
+    DATA(i).histogram = HIST/norm(HIST);
     START = END;
 end
 
