@@ -2,9 +2,8 @@
 %           and trains a support vector machine for the chosen
 %           data set.
 
-
 % Parameters
-CATEGORY = 1; % Train with this category as the positive images
+CATEGORY = 7; % Train with this category as the positive images
 
 % Get the project directory and set up paths
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/TrainSVM','');

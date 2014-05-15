@@ -14,7 +14,6 @@ X = X.X;
 %Create bag of words using kmeans clustering
 display ('Computing k-means...');
 
-opts = statset('Display','iter','UseParallel',true,'MaxIter',1);
 [C, IDX] = kmeans_gpu(X,k);
 
 % Store extracted feature vector to disk

@@ -4,7 +4,7 @@
 
 
 % Parameters
-CATEGORY = 1; % Train with this category as the positive images
+CATEGORY = 7; % Train with this category as the positive images
 
 % Get the project directory and set up paths
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/ClassifyImage','');
@@ -19,7 +19,7 @@ DATA = load(strcat(DATA_PATH, 'image_data.dat'),'-mat');
 DATA = DATA.DATA;
 
 % Load SVM
-SVM = load(strcat(DATA_PATH, 'category1_svm.dat'),'-mat');
+SVM = load(strcat(ROOT_DIR,'data/', 'category', int2str(CATEGORY), '_svm.dat'),'-mat');
 SVM = SVM.SVM;
 
 % Allocate structures for SVM arguments
@@ -34,12 +34,19 @@ for i = 1:length(DATA)
     else
         LABEL = -1;
     end
+    TRAINING_LABELS(i) =  LABEL;
     TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
 end
 
 %Train SVM
 display ('Predicting with SVM...');
-[predict_label, accuracy, prob_estimates] = svmpredict(TRAINING_LABELS, TRAINING_FEATURES, SVM, '-b 1');
 
+PREDICT_LABELS = svmpredict(TRAINING_LABELS, TRAINING_FEATURES, SVM, '-b 1');
 
+display ('Done.');
+
+LESS_THAN = bsxfun(@lt, TRAINING_LABELS, PREDICT_LABELS);
+GREATER_THAN = bsxfun(@gt, TRAINING_LABELS, PREDICT_LABELS);
+FALSE_POSITIVE = sum(LESS_THAN)/length(DATA)*100
+FALSE_NEGATIVE = sum(GREATER_THAN)/length(DATA)*100
 
