@@ -5,7 +5,7 @@ FOLDERS = ['airplanes_side '; 'background     '; 'cars_brad      '; 'cars_markus
 FOLDERS = cellstr(FOLDERS);
 
 % Get the project directory
-ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/BuildClusters','');
+ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/GetFeatures','');
 
 % Structure to store all file data
 DATA = struct('category', 0, 'directory',  0, 'filename',  0, 'numFeatures', 0, 'surfFeatures', 0, 'histogram', 0);
