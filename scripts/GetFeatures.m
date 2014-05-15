@@ -1,42 +1,61 @@
-%GetFeatures - Opens an set of images and extracts the features.
-%              This data is saved the folder name.
+% Extracts Features from all images
 
-% Input and output arguments
-INPUT_FOLDER = 'airplanes_side'
+% Image folders
+FOLDERS = ['airplanes_side '; 'background     '; 'cars_brad      '; 'cars_markus    '; 'faces          '; 'leaves         '; 'motorbikes_side'];
+FOLDERS = cellstr(FOLDERS);
 
 % Get the project directory
-ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/GetFeatures','');
+ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/BuildClusters','');
 
-% Set the path location and add to the global matlab path
-IMAGE_PATH = strcat(ROOT_DIR, 'images/', INPUT_FOLDER, '/');
-addpath(IMAGE_PATH);
+% Structure to store all file data
+DATA = struct('category', 0, 'directory',  0, 'filename',  0, 'numFeatures', 0, 'surfFeatures', 0, 'histogram', 0);
 
-% Get all image file descriptors in the path
-FILE_DESCRIPTORS = dir(strcat(IMAGE_PATH, '*.jpg'));
-NUM_FILES = length(FILE_DESCRIPTORS);
+% Fetch all file names
+display ('Getting Filenames...');
+COUNT = 1;
+for i = 1:length(FOLDERS)
+    IMAGE_PATH = strcat(ROOT_DIR, 'images/', strtrim(char(FOLDERS(i))), '/');
+    FILE_DESCRIPTORS = dir(strcat(IMAGE_PATH, '*.jpg'));
+    for j = 1:length(FILE_DESCRIPTORS)
+        DATA(COUNT).category = i;
+        DATA(COUNT).directory = IMAGE_PATH;
+        DATA(COUNT).filename = FILE_DESCRIPTORS(j).name;
+        COUNT = COUNT + 1;
+    end
+end
 
-% Allocate array to hold extracted features
-FEATURES = struct('filename',  0, 'surfFeatures', 0, 'freakFeatures', 0, 'surfPoints', 0, 'freakPoints', 0);
+display ('Extracting Features...');
 
-for i = 1:NUM_FILES
+X = [];
+
+% Get features from all images
+for i = 1:length(DATA)
     
     %Display iteration
-    display(strcat('Image: ', FILE_DESCRIPTORS(i).name));
+    display(strcat(DATA(i).directory,  DATA(i).filename));
     
     %Load image
-    IMAGE = imread(FILE_DESCRIPTORS(i).name);
+    IMAGE = imread(strcat(DATA(i).directory,  DATA(i).filename));
+    
+    %Convert to grayscales if necessary
     if (size(IMAGE, 3) == 3)
         IMAGE = rgb2gray(IMAGE);
     end;
     
     %Store extracted features to vector
-    FEATURES(i).filename = FILE_DESCRIPTORS(i).name;
-    tmp = detectSURFFeatures(IMAGE);
-    [FEATURES(i).surfFeatures, FEATURES(i).surfPoints]     = extractFeatures(IMAGE, tmp.selectStrongest(100));
-    tmp = detectFASTFeatures(IMAGE);
-    [FEATURES(i).freakFeatures, FEATURES(i).freakPoints]   = extractFeatures(IMAGE, tmp.selectStrongest(100), 'Method', 'FREAK');
-    clear tmp;
+    [Y, Z] = extractFeatures(IMAGE, detectSURFFeatures(IMAGE));
+    DATA(i).surfFeatures = Y;
+    [FEATS, DIMS] = size(Y);
+    DATA(i).numFeatures = FEATS;
+    X = [X; Y];
 end
 
-% Store extracted feature vector to disk
-save(strcat(ROOT_DIR,'data/',INPUT_FOLDER, '.dat'), 'FEATURES');
+display ('Saving Data...');
+
+save(strcat(ROOT_DIR,'data/','image_data.dat'), 'DATA');
+save(strcat(ROOT_DIR,'data/','feature_array.dat'), 'X');
+
+display ('Done.');
+
+
+
