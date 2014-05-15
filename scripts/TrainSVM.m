@@ -41,7 +41,8 @@ TRAINING_FEATURES = [];
 
 %Add data to structured SVM training arrays
 for i = 1:NUM_POS
-    for j = 1:length(POS_DATA(i).surfFeatures)
+    [NUM_FEATS, NUM_POINTS] = size(POS_DATA(i).surfFeatures);
+    for j = 1:NUM_FEATS
         TRAINING_LABELS = [TRAINING_LABELS 1];
         TRAINING_FEATURES = [TRAINING_FEATURES POS_DATA(i).surfFeatures(j,:)'];
     end
@@ -57,6 +58,8 @@ for k = 1:6
         end
     end
 end
+
+size(TRAINING_FEATURES)
 
 display ('Training SVM...');
 

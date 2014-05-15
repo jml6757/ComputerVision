@@ -45,7 +45,7 @@ for i = 1:NUM_POS
         SUM = SUM + svmpredict(0, double(POS_DATA(i).surfFeatures(j,:)), SVM);
     end
     
-    if(SUM > 1)
+    if(SUM > 0)
        POS = POS + 1; 
     else
        NEG = NEG + 1;
