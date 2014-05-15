@@ -20,11 +20,9 @@ addpath(LIB_PATH);
 NUM_POS = 50;                     % Number of positive instances
 NUM_NEG = 50;                     % Number of negative instances
 NUM_TRAINING = NUM_NEG + NUM_POS; % Total number of training images
-NUM_FEATURES = 128;               % Number of features per image
+NUM_FEATURES = 64;                % Number of features per image
 
-% Preallocate arrays for SVM training
-% TRAINING_LABELS   = zeros(NUM_TRAINING,1);            % Positive or negative label
-% TRAINING_FEATURES = zeros(NUM_TRAINING,NUM_FEATURES); % Features for all images
+display ('Loading Data...');
 
 %Load positive data
 POS_DATA = load(strcat(DATA_PATH, POSITIVE_FILE, '.dat'),'-mat');
@@ -35,22 +33,39 @@ for i = 1:length(NEGATIVE_FILE)
     NEG_DATA(i) = load(strcat(DATA_PATH, strtrim(char(NEGATIVE_FILE(i))), '.dat'),'-mat');
 end
 
-%Shuffle data
+display ('Formatting Data...');
 
+%Shuffle data
+TRAINING_LABELS = [];
+TRAINING_FEATURES = [];
 
 %Add data to structured SVM training arrays
-POS = 0;
 for i = 1:NUM_POS
-    TRAINING_LABELS(i) = 1;
+    for j = 1:length(POS_DATA(i).surfFeatures)
+        TRAINING_LABELS = [TRAINING_LABELS 1];
+        TRAINING_FEATURES = [TRAINING_FEATURES POS_DATA(i).surfFeatures(j,:)'];
+    end
 end
 
-for i = 1:NUM_NEG
-    TRAINING_LABELS(i+NUM_POS) = -1;
+for k = 1:6
+    NEG_SET = NEG_DATA(k).FEATURES;
+    for i = 1:10
+        [NUM_FEATS, NUM_POINTS] = size(NEG_SET(i).surfFeatures);
+        for j = 1:NUM_FEATS
+            TRAINING_LABELS = [TRAINING_LABELS -1];
+            TRAINING_FEATURES = [TRAINING_FEATURES NEG_SET(i).surfFeatures(j,:)'];
+        end
+    end
 end
 
+display ('Training SVM...');
 
 %Train SVM
-%SVM = svmtrain(TRAINING_LABELS, TRAINING_FEATURES, '-c 1 -g 0.07');
-        
+SVM = svmtrain(double(TRAINING_LABELS'), double(TRAINING_FEATURES'), '-c 1 -g 0.07');
+
+display ('Saving SVM...');
+
 % Store support vector machine model
-%save(strcat(ROOT_DIR,'data/',POSITIVE_FILE, '_svm.dat'), 'SVM');
+save(strcat(ROOT_DIR,'data/',POSITIVE_FILE, '_svm.dat'), 'SVM');
+
+display ('Done.');
