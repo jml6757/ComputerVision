@@ -8,7 +8,7 @@ FOLDERS = cellstr(FOLDERS);
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/GetFeatures','');
 
 % Structure to store all file data
-DATA = struct('category', 0, 'directory',  0, 'filename',  0, 'numFeatures', 0, 'surfFeatures', 0, 'histogram', 0);
+DATA = struct('category', 0, 'directory',  0, 'filename',  0, 'numFeatures', 0, 'surfFeatures', 0, 'histogram', 0, 'train_test', 0);
 
 % Fetch all file names
 display ('Getting Filenames...');
@@ -17,6 +17,11 @@ for i = 1:length(FOLDERS)
     IMAGE_PATH = strcat(ROOT_DIR, 'images/', strtrim(char(FOLDERS(i))), '/');
     FILE_DESCRIPTORS = dir(strcat(IMAGE_PATH, '*.jpg'));
     for j = 1:length(FILE_DESCRIPTORS)
+        if (mod(COUNT, 10) > 0)
+            DATA(COUNT).train_test = 'train';
+        else
+            DATA(COUNT).train_test = 'test';
+        end
         DATA(COUNT).category = i;
         DATA(COUNT).directory = IMAGE_PATH;
         DATA(COUNT).filename = FILE_DESCRIPTORS(j).name;
