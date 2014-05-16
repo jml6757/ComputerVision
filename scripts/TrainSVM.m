@@ -3,7 +3,7 @@
 %           data set.
 
 % Parameters
-CATEGORY = 7; % Train with this category as the positive images
+CATEGORY = 6; % Train with this category as the positive images
 
 % Get the project directory and set up paths
 ROOT_DIR = strrep(strrep(mfilename('fullpath'), '\', '/') ,'scripts/TrainSVM','');
@@ -31,7 +31,7 @@ for i = 1:length(DATA)
         else
             LABEL = -1;
         end
-        TRAINING_LABELS(COUNT) =  LABEL;
+        TRAINING_LABELS(COUNT,1) =  LABEL;
         TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
         COUNT = COUNT + 1;
     end

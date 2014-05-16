@@ -12,6 +12,7 @@ IDX = IDX.IDX;
 DATA = load(strcat(DATA_PATH, 'image_data.dat'),'-mat');
 DATA = DATA.DATA;
 C = load(strcat(DATA_PATH, 'clusters.dat'),'-mat');
+C = C.C;
 
 % Build Histograms
 display('Building Histograms...');
@@ -25,7 +26,8 @@ for i = 1:length(DATA)
         DATA(i).histogram = HIST/norm(HIST);
         START = END;
     else
-        DATA(i).histogram = getHist(DATA(i).surfFeatures,C);
+        HIST = getHist(DATA(i).surfFeatures,C);
+        DATA(i).histogram = HIST/norm(HIST);
     end
 end
 
