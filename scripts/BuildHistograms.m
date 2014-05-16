@@ -11,17 +11,22 @@ IDX = load(strcat(DATA_PATH, 'cluster_index.dat'),'-mat');
 IDX = IDX.IDX;
 DATA = load(strcat(DATA_PATH, 'image_data.dat'),'-mat');
 DATA = DATA.DATA;
+C = load(strcat(DATA_PATH, 'clusters.dat'),'-mat');
 
 % Build Histograms
 display('Building Histograms...');
 
 START = 1;
 for i = 1:length(DATA)
-    NUM_FEATS = DATA(i).numFeatures;
-    END = START + NUM_FEATS-1;
-    HIST = hist(IDX(START:END), HIST_SIZE);
-    DATA(i).histogram = HIST/norm(HIST);
-    START = END;
+    if strcmp(DATA(i).train_test,'train')
+        NUM_FEATS = DATA(i).numFeatures;
+        END = START + NUM_FEATS-1;
+        HIST = hist(IDX(START:END), HIST_SIZE);
+        DATA(i).histogram = HIST/norm(HIST);
+        START = END;
+    else
+        DATA(i).histogram = getHist(DATA(i).surfFeatures,C);
+    end
 end
 
 % Overwrite Old Data File

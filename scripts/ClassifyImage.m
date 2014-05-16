@@ -23,19 +23,23 @@ SVM = load(strcat(ROOT_DIR,'data/', 'category', int2str(CATEGORY), '_svm.dat'),'
 SVM = SVM.SVM;
 
 % Allocate structures for SVM arguments
-TRAINING_LABELS = zeros(length(DATA), 1);
+% TRAINING_LABELS = zeros(length(DATA), 1);
 TRAINING_FEATURES = [];
+COUNT = 1;
 
 %Add data to structured SVM training arrays
 display ('Formatting Data...');
 for i = 1:length(DATA)
-    if(DATA(i).category == CATEGORY)
-        LABEL = 1;
-    else
-        LABEL = -1;
+    if(strcmp(DATA(i).train_test,'test'))
+        if(DATA(i).category == CATEGORY)
+            LABEL = 1;
+        else
+            LABEL = -1;
+        end
+        TRAINING_LABELS(COUNT) =  LABEL;
+        TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
+        COUNT = COUNT + 1;
     end
-    TRAINING_LABELS(i) =  LABEL;
-    TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
 end
 
 %Train SVM
@@ -47,6 +51,6 @@ display ('Done.');
 
 LESS_THAN = bsxfun(@lt, TRAINING_LABELS, PREDICT_LABELS);
 GREATER_THAN = bsxfun(@gt, TRAINING_LABELS, PREDICT_LABELS);
-FALSE_POSITIVE = sum(LESS_THAN)/length(DATA)*100
-FALSE_NEGATIVE = sum(GREATER_THAN)/length(DATA)*100
+FALSE_POSITIVE = sum(LESS_THAN)/(COUNT - 1)*100
+FALSE_NEGATIVE = sum(GREATER_THAN)/(COUNT - 1)*100
 

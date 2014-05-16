@@ -18,19 +18,23 @@ DATA = load(strcat(DATA_PATH, 'image_data.dat'),'-mat');
 DATA = DATA.DATA;
 
 % Allocate structures for SVM arguments
-TRAINING_LABELS = zeros(length(DATA), 1);
+% TRAINING_LABELS = zeros(length(DATA), 1);
 TRAINING_FEATURES = [];
+COUNT = 1;
 
 %Add data to structured SVM training arrays
 display ('Formatting Data...');
 for i = 1:length(DATA)
-    if(DATA(i).category == CATEGORY)
-        LABEL = 1;
-    else
-        LABEL = -1;
+    if(strcmp(DATA(i).train_test,'train'))
+        if(DATA(i).category == CATEGORY)
+            LABEL = 1;
+        else
+            LABEL = -1;
+        end
+        TRAINING_LABELS(COUNT) =  LABEL;
+        TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
+        COUNT = COUNT + 1;
     end
-    TRAINING_LABELS(i) =  LABEL;
-    TRAINING_FEATURES = [TRAINING_FEATURES; DATA(i).histogram];
 end
 
 %Train SVM

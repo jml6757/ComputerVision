@@ -52,7 +52,9 @@ for i = 1:length(DATA)
     DATA(i).surfFeatures = Y;
     [FEATS, DIMS] = size(Y);
     DATA(i).numFeatures = FEATS;
-    X = [X; Y];
+    if (strcmp(DATA(i).train_test, 'train'))
+        X = [X; Y];
+    end
 end
 
 display ('Saving Data...');
